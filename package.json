@@ -1,5 +1,6 @@
 {
   "name": "100-react-exercises",
+  "homepage": "/100-react-exercises",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
