@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 
 const exercises = require.context(
   './exercises',
@@ -22,6 +22,25 @@ function App() {
   return (
     <BrowserRouter basename="/100-react-exercises">
       <Routes>
+        <Route
+          path="/"
+          element={
+            <main>
+              <h1>React Exercises</h1>
+
+              <ul>
+                {apps.map(({ name }) => (
+                  <li key={name}>
+                    <Link to={`/${name}`}>
+                      {name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </main>
+          }
+        />
+
         {apps.map(({ name, Component }) => (
           <Route
             key={name}
@@ -33,6 +52,7 @@ function App() {
     </BrowserRouter>
   );
 }
+
 
 export default App;
 
