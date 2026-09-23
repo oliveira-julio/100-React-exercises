@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+const exercises = require.context(
+  './exercises',
+  true,
+  /App\.js$/
+);
+
+const apps = exercises.keys().map((key) => {
+  const Component = exercises(key).default;
+
+  const match = key.match(/\.\/([^/]+)\/App\.js$/);
+  const name = match[1];
+
+  return {
+    name,
+    Component,
+  };
+});
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter basename="/100-react-exercises">
+      <Routes>
+        {apps.map(({ name, Component }) => (
+          <Route
+            key={name}
+            path={`/${name}`}
+            element={<Component />}
+          />
+        ))}
+      </Routes>
+    </BrowserRouter>
   );
 }
 
 export default App;
+
