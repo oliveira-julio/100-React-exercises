@@ -64,6 +64,11 @@ jobs:
 
           done
 
+      - name: Inspect site
+        run: |
+          echo "=== SITE ==="
+          find ./site -maxdepth 3 -type f | sort
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
