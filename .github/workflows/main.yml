@@ -29,11 +29,40 @@ jobs:
           node-version: 24
           cache: npm
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Build all apps
+        shell: bash
+        run: |
+          set -e
 
-      - name: Build
-        run: npm run build
+          mkdir -p site
+
+          echo "Building main app..."
+
+          npm ci
+          npm run build
+
+          mkdir -p site
+          cp -R build/. site/
+
+          for app in [0-9][0-9][0-9]-*/; do
+            [ -d "$app" ] || continue
+            app="${app%/}"
+
+            echo "======================================"
+            echo "Building sub-app: $app"
+            echo "======================================"
+
+            cd "$app"
+
+            npm ci
+            npm run build
+
+            cd ..
+
+            mkdir -p "site/$app"
+            cp -R "$app/build/." "site/$app/"
+
+          done
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
